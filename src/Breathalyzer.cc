@@ -38,7 +38,7 @@ float Breathalyzer::getWarmupPercent() {
   return static_cast<float>(elapsed) / static_cast<float>(WARMUP_TIME);
 }
 void Breathalyzer::refreshValue() {
-  const int newValue = analogRead(analogPin);
+  const uint16_t newValue = analogRead(analogPin);
   const unsigned long current = millis();
   if (newValue > value || current - valueChangeTime >= VALUE_STABLE_TIME) {
     value = newValue;

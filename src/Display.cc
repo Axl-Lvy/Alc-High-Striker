@@ -32,8 +32,8 @@ void Display::displayNumber(const float number) {
   sevseg.setNumberF(number, decimalPrecision);
 }
 
-void Display::displayNumber(const int number) {
-  if (number < 0 || number > 9999) {
+void Display::displayNumber(const uint16_t number) {
+  if (number > 9999) {
     displayError();
     return;
   }
@@ -46,8 +46,8 @@ void Display::displayPercent(const float percent) {
     return;
   }
 
-  constexpr int totalSegments = 28;
-  const int segmentsToLight = round(percent * totalSegments);
+  constexpr uint8_t totalSegments = 28;
+  const auto segmentsToLight = static_cast<uint8_t>(round(percent * totalSegments));
 
   uint8_t segmentCodes[4] = {0, 0, 0, 0};
 

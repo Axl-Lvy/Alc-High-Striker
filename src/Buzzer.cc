@@ -7,32 +7,32 @@
 #include "Buzzer.h"
 #include "pitches.h"
 
-Buzzer::Buzzer(const int pin, const float tempo)
-  : pin(pin), tempo(tempo) {
+Buzzer::Buzzer(const uint8_t pin, const float tempo)
+  : pin(pin), tempo(tempo),
+    notes(new uint16_t[8]{NOTE_C3, NOTE_D3, NOTE_E3, NOTE_F3, NOTE_G3, NOTE_A4, NOTE_B4, NOTE_C4}) {
   previousTime = millis();
   nextNoteTime = millis();
   currentNoteIndex = 0;
-  notes = new int[8]{NOTE_C3, NOTE_D3, NOTE_E3, NOTE_F3, NOTE_G3, NOTE_A4, NOTE_B4, NOTE_C4};
+}
+
+Buzzer::~Buzzer() {
+  delete[] notes;
 }
 
 void Buzzer::play() {
-  const long current = millis();
+  const unsigned long current = millis();
   if (current >= nextNoteTime) {
-    const long duration = getNoteDuration(0.5);
+    const unsigned long duration = getNoteDuration(0.5);
     playNote(notes[currentNoteIndex], duration);
     currentNoteIndex = (currentNoteIndex + 1) % 8;
     nextNoteTime = current + duration;
   }
 }
 
-void Buzzer::stop() {
-  // Logique pour arrêter le buzzer
-}
-
-void Buzzer::playNote(const int note, const float duration) const {
+void Buzzer::playNote(const uint16_t note, const unsigned long duration) const {
   tone(pin, note, duration);
 }
 
-float Buzzer::getNoteDuration(const float rhythm) const {
-  return (60000.0 / tempo) * rhythm;
+long Buzzer::getNoteDuration(const float rhythm) const {
+  return static_cast<long>((60000.0 / tempo) * rhythm);
 }

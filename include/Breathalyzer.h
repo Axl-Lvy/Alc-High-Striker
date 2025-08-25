@@ -17,14 +17,14 @@ class Breathalyzer {
      * @param analogPin pin connected to the analog output of the MQ3 sensor
      * @param thresholdPin pin connected to the digital output of the MQ3 sensor
      */
-    Breathalyzer(int analogPin, int thresholdPin);
+    Breathalyzer(uint8_t analogPin, uint8_t thresholdPin);
 
     /**
      * Constructor without threshold pin.
      *
      * @param analogPin pin connected to the analog output of the MQ3 sensor
      */
-    explicit Breathalyzer(int analogPin);
+    explicit Breathalyzer(uint8_t analogPin);
 
     /**
      * The sensor requires a warm-up time of approximately 20 seconds after being powered on.
@@ -40,14 +40,14 @@ class Breathalyzer {
      *
      * @return alcohol level as an integer value, or -1 if the sensor is not ready
      */
-    int getAlcoholLevel();
+    uint16_t getAlcoholLevel();
 
   private:
-    int analogPin;
-    int thresholdPin;
+    uint8_t analogPin;
+    uint8_t thresholdPin;
     bool ready;
     unsigned long startTime;
-    int value;
+    uint16_t value;
     unsigned long valueChangeTime;
 
     void refreshValue();

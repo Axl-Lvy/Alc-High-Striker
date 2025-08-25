@@ -7,19 +7,19 @@
 
 class Buzzer {
   public:
-    Buzzer(int pin, float tempo);
+    Buzzer(uint8_t pin, float tempo);
+    ~Buzzer();
     void play();
-    void stop();
 
   private:
-    void playNote(int note, float duration) const;
-    float getNoteDuration(float rhythm) const;
-    int pin;
+    void playNote(uint16_t note, unsigned long duration) const;
+    long getNoteDuration(float rhythm) const;
+    uint8_t pin;
     float tempo;
-    float previousTime;
-    float nextNoteTime;
-    int currentNoteIndex;
-    int* notes;
+    unsigned long previousTime;
+    unsigned long nextNoteTime;
+    uint8_t currentNoteIndex;
+    uint16_t* notes;
 };
 
 

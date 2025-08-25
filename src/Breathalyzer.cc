@@ -6,11 +6,11 @@
 
 #include "Breathalyzer.h"
 
-#define WARMUP_TIME 20000 // Time in milliseconds to warm up the sensor
-#define VALUE_STABLE_TIME 2000 // Time in milliseconds before considering the value stable
+constexpr uint16_t WARMUP_TIME = 20000; // Time in milliseconds to warm up the sensor
+constexpr uint16_t VALUE_STABLE_TIME = 2000; // Time in milliseconds before considering the value stable
 
 
-Breathalyzer::Breathalyzer(const int analogPin, const int thresholdPin) : analogPin(analogPin),
+Breathalyzer::Breathalyzer(const uint8_t analogPin, const uint8_t thresholdPin) : analogPin(analogPin),
                                                                           thresholdPin(thresholdPin) {
   if (thresholdPin > 0) {
     pinMode(thresholdPin, INPUT);
@@ -22,7 +22,7 @@ Breathalyzer::Breathalyzer(const int analogPin, const int thresholdPin) : analog
   valueChangeTime = startTime;
 }
 
-Breathalyzer::Breathalyzer(const int analogPin) : Breathalyzer(analogPin, -1) {
+Breathalyzer::Breathalyzer(const uint8_t analogPin) : Breathalyzer(analogPin, -1) {
 }
 
 float Breathalyzer::getWarmupPercent() {
@@ -46,7 +46,7 @@ void Breathalyzer::refreshValue() {
   }
 }
 
-int Breathalyzer::getAlcoholLevel() {
+uint16_t Breathalyzer::getAlcoholLevel() {
   if (!ready) {
     return -1;
   }

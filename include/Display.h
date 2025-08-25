@@ -27,7 +27,7 @@ class Display {
      * @param number Number to display. Should be between 0 and 9999.
      */
     void displayNumber(float number);
-    void displayNumber(int number);
+    void displayNumber(uint16_t number);
 
     /**
      * Displays a percentage. At 0.0, the display is blank, at 1.0 it is full.

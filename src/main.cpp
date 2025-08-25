@@ -1,8 +1,12 @@
 #include <Arduino.h>
+
+#include "Buzzer.h"
 #include "SevSeg.h"
+
 #define MQ3pin 0
 
 SevSeg sevseg; //Instantiate a seven segment object
+Buzzer buzzer(13, 120.0); // Buzzer on pin 5 with tempo 120 BPM
 constexpr long interval = 1000;
 unsigned long previous = 0;
 
@@ -43,6 +47,7 @@ void setup() {
 }
 
 void loop() {
+  buzzer.play();
   const unsigned long current = millis();
   sevseg.refreshDisplay();
   if (current - previous > interval) {

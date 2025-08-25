@@ -40,13 +40,17 @@ class Breathalyzer {
      *
      * @return alcohol level as an integer value, or -1 if the sensor is not ready
      */
-    int getAlcoholLevel() const;
+    int getAlcoholLevel();
 
   private:
     int analogPin;
     int thresholdPin;
     bool ready;
-    long startTime;
+    unsigned long startTime;
+    int value;
+    unsigned long valueChangeTime;
+
+    void refreshValue();
 };
 
 

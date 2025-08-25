@@ -12,7 +12,7 @@ class Buzzer {
     void stop();
 
   private:
-    void playNote(int note, float duration);
+    void playNote(int note, float duration) const;
     float getNoteDuration(float rhythm) const;
     int pin;
     float tempo;

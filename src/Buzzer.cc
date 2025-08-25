@@ -2,9 +2,10 @@
 // Created by Axel on 25/08/2025.
 //
 
-#include <Buzzer.h>
 #include <Arduino.h>
-#include <pitches.h>
+
+#include "Buzzer.h"
+#include "pitches.h"
 
 Buzzer::Buzzer(const int pin, const float tempo)
   : pin(pin), tempo(tempo) {
@@ -28,7 +29,7 @@ void Buzzer::stop() {
   // Logique pour arrêter le buzzer
 }
 
-void Buzzer::playNote(const int note, const float duration) {
+void Buzzer::playNote(const int note, const float duration) const {
   tone(pin, note, duration);
 }
 

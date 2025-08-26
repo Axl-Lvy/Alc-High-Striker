@@ -6,7 +6,7 @@
 
 Buzzer buzzer(13, 120.0); // NOSONAR
 Breathalyzer breathalyzer(0); // NOSONAR
-Display display(new byte[4]{12, 9, 8, 6}, new byte[8]{11, 7, 4, 2, 1, 10, 5, 3}); // NOSONAR
+Display display(2,3,4,5); // NOSONAR
 constexpr long refreshInterval = 0;
 unsigned long previous = 0; // NOSONAR
 
@@ -20,6 +20,7 @@ void loop() {
   if (warmupPercent < 1.0f) {
     display.displayPercent(warmupPercent);
   } else {
+    display.clear();
     const unsigned long current = millis();
     if (current >= refreshInterval + previous) {
       previous = current;
@@ -27,5 +28,4 @@ void loop() {
       display.displayNumber(alcoholLevel);
     }
   }
-  display.refresh();
 }

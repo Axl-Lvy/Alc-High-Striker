@@ -5,28 +5,27 @@
 #ifndef ALC_HIGH_STRIKER_DISPLAY_H
 #define ALC_HIGH_STRIKER_DISPLAY_H
 #include <Arduino.h>
-#include "SevSeg.h"
+#include "ShiftLcd.h"
 
 /**
  * Class representing a 7-segment display.
  */
 class Display {
   public:
+
     /**
-     *  Constructor.
+     * Constructor.
      *
-     * @param digitPins Digit pins that control which digit is selected
-     * @param segmentPins Segment pins that control which segments are lit
+     * @param lcd_en Pin connected to the LCD Enable (EN) pin.
+     * @param lcd_d7 Pin connected to the LCD Data 7 (D7) pin.
+     * @param shift_ser Pin connected to the Shift Register Serial (SER) pin.
+     * @param shift_srclk Pin connected to the Shift Register Clock (SRCLK) pin.
      */
     Display(
-      const byte digitPins[],
-      const byte segmentPins[]);
-    /**
-     * Displays a number.
-     *
-     * @param number Number to display. Should be between 0 and 9999.
-     */
-    void displayNumber(float number);
+      uint8_t lcd_en,
+      uint8_t lcd_d7,
+      uint8_t shift_ser,
+      uint8_t shift_srclk);
     void displayNumber(uint16_t number);
 
     /**
@@ -40,15 +39,11 @@ class Display {
      * Displays an error message.
      */
     void displayError();
-
-    /**
-     * Refreshes the display. Should be called frequently in the main loop.
-     * This simply delegates to the SevSeg library's refreshDisplay method.
-     */
-    void refresh();
+    void clear();
 
   private:
-    SevSeg sevseg;
+    ShiftLcd lcd;
+    bool cleared;
 };
 
 

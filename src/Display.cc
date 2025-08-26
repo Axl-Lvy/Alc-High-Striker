@@ -5,79 +5,37 @@
 #include "Display.h"
 #include "SevSeg.h"
 
-Display::Display(
-  const byte digitPins[],
-  const byte segmentPins[]) {
-  sevseg.begin(COMMON_ANODE,
-               4,
-               digitPins,
-               segmentPins,
-               false,
-               false,
-               false,
-               false);
-}
-
-void Display::displayNumber(const float number) {
-  char decimalPrecision;
-  if (number >= 1000) {
-    decimalPrecision = 0;
-  } else if (number >= 100) {
-    decimalPrecision = 1;
-  } else if (number >= 10) {
-    decimalPrecision = 2;
-  } else {
-    decimalPrecision = 3;
-  }
-  sevseg.setNumberF(number, decimalPrecision);
+Display::Display(const uint8_t lcd_en,
+                 const uint8_t lcd_d7,
+                 const uint8_t shift_ser,
+                 const uint8_t shift_srclk)
+                   : lcd(ShiftLcd(lcd_en, lcd_d7, shift_ser, shift_srclk)), cleared(false) {
+  lcd.begin();
 }
 
 void Display::displayNumber(const uint16_t number) {
-  if (number > 9999) {
-    displayError();
-    return;
+  String zerosToAdd = "";
+  if (number < 10) {
+    zerosToAdd = "000";
+  } else if (number < 100) {
+    zerosToAdd = "00";
+  } else if (number < 1000) {
+    zerosToAdd = "0";
   }
-  sevseg.setNumber(number);
+  lcd.write(zerosToAdd + static_cast<String>(number));
 }
 
 void Display::displayPercent(const float percent) {
-  if (percent > 1.0f || percent < 0.0f) {
-    displayError();
-    return;
-  }
-
-  constexpr uint8_t totalSegments = 28;
-  const auto segmentsToLight = static_cast<uint8_t>(round(percent * totalSegments));
-
-  uint8_t segmentCodes[4] = {0, 0, 0, 0};
-
-  const int fullDigits = segmentsToLight / 7;
-
-  for (int i = 0; i < fullDigits && i < 4; i++) {
-    segmentCodes[3 - i] = 0x7F;
-  }
-
-  const int remainingSegments = segmentsToLight % 7;
-  if (remainingSegments > 0 && fullDigits < 4) {
-    const uint8_t segmentMasks[] = {
-      0b00000001,  // A (top)
-      0b00000011,  // A + B (top right)
-      0b00000111,  // A + B + C (bottom right)
-      0b00001111,  // A + B + C + D (bottom)
-      0b00011111,  // A + B + C + D + E (bottom left)
-      0b00111111,  // A + B + C + D + E + F (top left)
-      0b01111111,  // A + B + C + D + E + F + G (mid)
-    };
-    segmentCodes[3 - fullDigits] = segmentMasks[remainingSegments - 1];
-  }
-
-  sevseg.setSegments(segmentCodes);
+  lcd.writePercent(percent);
 }
 
 void Display::displayError() {
-  sevseg.setChars(" ERR");
+  lcd.write("ERROR!");
 }
 
-void Display::refresh() {
-  sevseg.refreshDisplay();
+void Display::clear() {
+  if (!cleared) {
+    lcd.clear();
+    cleared = true;
+  }
 }
